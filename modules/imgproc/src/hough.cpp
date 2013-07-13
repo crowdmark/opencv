@@ -794,7 +794,6 @@ cvHoughLines2( CvArr* src_image, void* lineStorage, int method,
     CvSeqBlock lines_block;
     int lineType, elemSize;
     int linesMax = INT_MAX;
-    int iparam1, iparam2;
 
     img = cvGetMat( img, &stub );
 
@@ -841,10 +840,7 @@ cvHoughLines2( CvArr* src_image, void* lineStorage, int method,
     }
     else
         CV_Error( CV_StsBadArg, "Destination is not CvMemStorage* nor CvMat*" );
-
-    iparam1 = cvRound(param1);
-    iparam2 = cvRound(param2);
-
+    
     switch( method )
     {
     case CV_HOUGH_STANDARD:
@@ -853,15 +849,15 @@ cvHoughLines2( CvArr* src_image, void* lineStorage, int method,
           break;
     case CV_HOUGH_STANDARD_RANGED:
           icvHoughLinesStandardRanged( img, (float)rho, (float)theta,
-                threshold, iparam1, iparam2, lines, linesMax );
+                threshold, (float)param1, (float)param2, lines, linesMax );
           break;
     case CV_HOUGH_MULTI_SCALE:
           icvHoughLinesSDiv( img, (float)rho, (float)theta,
-                threshold, iparam1, iparam2, lines, linesMax );
+                threshold, cvRound(param1), cvRound(param2), lines, linesMax );
           break;
     case CV_HOUGH_PROBABILISTIC:
           icvHoughLinesProbabilistic( img, (float)rho, (float)theta,
-                threshold, iparam1, iparam2, lines, linesMax );
+                threshold, cvRound(param1), cvRound(param2), lines, linesMax );
           break;
     default:
         CV_Error( CV_StsBadArg, "Unrecognized method id" );
